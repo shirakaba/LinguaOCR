@@ -38,8 +38,7 @@ export class HelloWorldModel extends Observable {
          * - Provide a button for launching OCR (caution if image.jpeg isn't present)
          * - Provide a view for displaying results.
          * - Provide a way to re-select port number?
-         * - tns plugin add native-script-http-server
-         * - tns remove platform ios && tns run ios
+         * - tns platform remove ios; tns plugin add nativescript-http-server; tns run ios
         */
     }
 
