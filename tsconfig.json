@@ -21,10 +21,6 @@
             ]
         }
     },
-    // "include": [
-    //     "app",
-    //     "node_modules/nativescript-http-server/typings"
-    // ],
     "exclude": [
         "node_modules",
         "platforms"

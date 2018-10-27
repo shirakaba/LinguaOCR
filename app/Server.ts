@@ -19,7 +19,7 @@ httpServer.addDefaultHandlerForMethodRequestClassAsyncProcessBlock(
     }
 )
 
-httpServer.startWithPortBonjourName(6000, "GCD Web Server");
+httpServer.startWithPortBonjourName(6060, "GCD Web Server");
 
 // // Create a server
 // let port = 6060;
