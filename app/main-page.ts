@@ -6,7 +6,8 @@ logic, and to set up your page’s data binding.
 
 import { EventData } from 'data/observable';
 import { Page } from 'ui/page';
-import { HelloWorldModel } from './main-view-model';
+// import { HelloWorldModel } from './main-view-model';
+import { wv } from './wv';
 
 // Event handler for Page "navigatingTo" event attached in main-page.xml
 export function navigatingTo(args: EventData) {
@@ -27,5 +28,7 @@ export function navigatingTo(args: EventData) {
     You can learn more about data binding in NativeScript at
     https://docs.nativescript.org/core-concepts/data-binding.
     */
-    page.bindingContext = new HelloWorldModel();
+    // page.bindingContext = new HelloWorldModel();
+    page.bindingContext = new wv();
+    page.bindingContext.navigatingTo(args);
 }

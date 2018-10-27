@@ -2,6 +2,8 @@
 
 import { Observable } from 'data/observable';
 import { HttpServer } from 'nativescript-http-server';
+import {WebView, LoadEventData} from "tns-core-modules/ui/web-view";
+
 
 export class HelloWorldModel extends Observable {
 

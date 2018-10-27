@@ -24,9 +24,20 @@ https://docs.nativescript.org/ui/components.
     core theme, such as p-20, btn, h2, and text-center. You can view a full list of the
     class names available for styling your app at https://docs.nativescript.org/ui/theme.
     -->
-    <StackLayout class="p-20">
-        <Label text="Tap the button" class="h1 text-center"/>
+    <!-- <StackLayout class="p-20">
+        <Label text="Tap the button heya" class="h1 text-center"/>
         <Button text="TAP" tap="{{ onTap }}" class="btn btn-primary btn-active"/>
         <Label text="{{ message }}" class="h2 text-center" textWrap="true"/>
-    </StackLayout>
+        <WebView id="wv" loaded="onWebViewLoaded" src="{{ webViewSrc }}" />
+    </StackLayout> -->
+    <GridLayout rows="75 * 50">
+        <GridLayout row="0" rows="*" columns="50 * 50" class="form">
+            <Button class="btn btn-primary btn-active icon" row="0" col="0" text="&#xea44;" tap="{{ goBack }}"/>
+            <TextField row="0" col="1" id="urlField" hint="Enter URL" text="{{ tftext }}" returnKeyType="done" returnPress="{{ submit }}"
+                autocorrect="false" verticalAlignment="center" class="input input-border m-t-0" autocapitalizationType="none"/>
+            <Button class="btn btn-primary btn-active icon" isEnabled="{{ enabled }}" row="0" col="2" text="&#xea42;" tap="{{ goForward }}"/>
+        </GridLayout>
+        <WebView row="1" id="wv" loaded="{{ onWebViewLoaded }}" src="{{ webViewSrc }}" />
+        <Label row="2" text="{{ result }}" />
+    </GridLayout>
 </Page>
