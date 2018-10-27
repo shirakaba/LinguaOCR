@@ -1,13 +1,6 @@
 /// <reference path="../node_modules/nativescript-http-server/typings/objc!GCDWebServer.d.ts" />
 
 import { Observable } from 'data/observable';
-
-// import { GCDWebServer } from 'nativescript-http-server/typings/objc!GCDWebServer.d.ts';
-// import { GCDWebServer } from 'nativescript-http-server';
-// import { GCDWebServerCopy } from 'nativescript-http-server';
-// import { GCDWebServerInstance } from 'nativescript-http-server';
-// const $GCDWebServer: GCDWebServer = require("GCDWebServer");
-
 import { HttpServer } from 'nativescript-http-server';
 
 export class HelloWorldModel extends Observable {
@@ -22,22 +15,33 @@ export class HelloWorldModel extends Observable {
         this._counter = 42;
         this.updateMessage();
 
-        // const GCDWebServer = require("GCDWebServer");
-        // const webServer = GCDWebServerInstance.alloc().init();
-        // const webServer = GCDWebServer.alloc().init();
-        // GCDWebServerInstance.addGETHandlerForBasePathDirectoryPathIndexFilenameCacheAgeAllowRangeRequests
-        // GCDWebServerInstance.start();
+        // NSBundle.mainBundle.resourcePath
+        // NSBundle.mainBundle.pathForResourceOfType("whatever", "js")
 
         const httpServer: GCDWebServer = new HttpServer()._webServer;
-        // let localUrl = httpServer.serveWithHtml("<html><body><p>Hello World</p></body></html>");
+        // httpServer.addDefaultHandlerForMethodRequestClassAsyncProcessBlock(
+        //     "GET",
+        //     GCDWebServerRequest as any,
+        //     (request, completionBlock) => {
+        //         const response = GCDWebServerDataResponse.alloc()
+        //         .initWithHTML("<html><body><p>Hello World</p></body></html>");
 
-        // GCDWebServerInstance.addDefaultHandlerForMethodRequestClassAsyncProcessBlock("GET", GCDWebServerRequest, (request,completionBlock) => {
-        //     var response = GCDWebServerDataResponse.alloc().initWithHTML("some html string");
-        //     completionBlock(response);
-        // });
-        
-        
-        // webServer.start();
+        //         return completionBlock(response);
+        //     }
+        // );
+
+        httpServer.addGETHandlerForBasePathDirectoryPathIndexFilenameCacheAgeAllowRangeRequests(
+            // "/www/",
+            "/",
+            `${NSBundle.mainBundle.resourcePath}/www`, // NSHomeDirectory()
+            null,
+            3600,
+            true
+        );
+
+        // Check Bonjour services via: dns-sd -B 
+        // http://hints.macworld.com/article.php?story=20051026183044858
+        httpServer.startWithPortBonjourName(6060, "GCD Web Server");
     }
 
     get message(): string {

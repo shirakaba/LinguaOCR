@@ -1,42 +1,25 @@
-// import * as GCDWebServer from "nativescript-http-server/GCDWebServer";
+import { HttpServer } from 'nativescript-http-server';
+const httpServer: GCDWebServer = new HttpServer()._webServer;
+httpServer.addGETHandlerForBasePathDirectoryPathIndexFilenameCacheAgeAllowRangeRequests(
+    "/",
+    "/",
+    "indexFilename",
+    1000,
+    true
+);
 
-// import * as GCDWebServer from "GCDWebServer";
-// import * as GCDWebServer from "NSGCDWebServer";
-// // import GCDWebServer = require("NSGCDWebServer");
-// // const GCDWebServer = require("NSGCDWebServer");
+httpServer.addDefaultHandlerForMethodRequestClassAsyncProcessBlock(
+    "GET",
+    GCDWebServerRequest as any,
+    (request, completionBlock) => {
+        const response = GCDWebServerDataResponse.alloc()
+        .initWithHTML("<html><body><p>Hello World</p></body></html>");
 
-// // declare namespace NSGCDWebServer {}
+        return completionBlock(response);
+    }
+)
 
-// declare global {
-//     var GCDWebServerRequest: string;
-//     class GCDWebServerDataResponse {
-//         static alloc(): GCDWebServerFactory;
-//     }
-//     class GCDWebServerFactory {
-//         initWithHTML(html: string): GCDWebServerDataResponse;
-//     }
-// }
-
-// const webServer = GCDWebServer.alloc().init();
-
-// webServer.addDefaultHandlerForMethodRequestClassAsyncProcessBlock("GET", GCDWebServerRequest, (request,completionBlock) => {
-//     var response = GCDWebServerDataResponse.alloc().initWithHTML("some html string");
-//     completionBlock(response);
-// });
-
-// const GCDWebServer = require("GCDWebServer");
-// // const GCDWebServer = require("GCDWebServer");
-// const webServer = GCDWebServer.alloc().init();
-
-// webServer.start();
-
-// import { HttpServer } from 'nativescript-http-server';
-
-
-
-// var httpServer = new HttpServer();
-// httpServer.serveWithHtml
-// let localUrl = httpServer.serveWithHtml("<html><body><p>Hello World</p></body></html>");
+httpServer.startWithPortBonjourName(6000, "GCD Web Server");
 
 // // Create a server
 // let port = 6060;
