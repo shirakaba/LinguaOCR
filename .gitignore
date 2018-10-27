@@ -23,6 +23,8 @@ nativescript-angular*.tgz
 package-lock.json
 
 # Apps' JS files
+app/*.js
+app/**/*.js
 tests/app/**/*.js
 tests/test-output.txt
 ng-sample/app/**/*.js
@@ -46,3 +48,4 @@ tsconfig.esm.json
 !.vscode/launch.json
 !.vscode/extensions.json
 eng.traineddata.gz
+Server.js
