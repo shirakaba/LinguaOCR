@@ -34,7 +34,14 @@
         let file = context.getImageData(0, 0, image.width, image.height);
 
         console.log("Recognising...");
-        Tesseract.recognize(file, {"lang": language })
+        // https://github.com/naptha/tesseract.js/blob/master/docs/tesseract_parameters.md
+        Tesseract.recognize(
+          file,
+          {
+            "lang": language,
+            "user_words_file": "eng.user-words"
+          }
+        )
         .then(data => {
           console.log("RECOGNISED!");
           console.log(data);
