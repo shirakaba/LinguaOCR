@@ -38,6 +38,7 @@ https://docs.nativescript.org/ui/components.
             <Button class="btn btn-primary btn-active icon" isEnabled="{{ enabled }}" row="0" col="2" text="&#xea42;" tap="{{ goForward }}"/>
         </GridLayout>
         <WebView row="1" id="wv" loaded="{{ onWebViewLoaded }}" src="{{ webViewSrc }}" />
-        <Label row="2" text="{{ result }}" />
+        <Button row ="2" text="Run OCR" tap="{{ ocr }}" class="btn btn-primary btn-active"/>
+        <!-- <Label row="3" text="{{ result }}" /> -->
     </GridLayout>
 </Page>

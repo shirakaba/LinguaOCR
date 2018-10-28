@@ -6,6 +6,7 @@ import { TextField } from "tns-core-modules/ui/text-field";
 import { HttpServer, HttpServerDelegate } from 'nativescript-http-server';
 
 export class wv extends Observable {
+    private static OCR_SERVER_DOMAIN: string = "http://localhost:6060";
     private static OCR_SERVER_URL: string = "http://localhost:6060/index.html";
     private webview?: WebView;
     private httpServer: GCDWebServer = new HttpServer()._webServer;
@@ -142,6 +143,16 @@ export class wv extends Observable {
             this.set("enabled", false);
         }
     }
+
+    ocr(args) {
+        if(this.get("webViewSrc").indexOf(wv.OCR_SERVER_DOMAIN) < 0) return;
+        console.log("ocr(): domain suitable");
+        this.webview!.ios.evaluateJavaScriptCompletionHandler(
+            "recognize('eng');",
+            (val, err) => console.log(val)
+        );
+    }
+
     // changing WebView source
     submit(args) {
         const page: Page = <Page> args.object.page;
@@ -149,7 +160,15 @@ export class wv extends Observable {
         const text = textField.text;
         this.set("enabled", false);
         if (text.substring(0, 4) === "http") {
-            this.set("webViewSrc", text);
+            if(text === this.get("webViewSrc")){
+                // this.webview!.reload();
+                this.webview!.ios.evaluateJavaScriptCompletionHandler(
+                    "location.reload(true);",
+                    (val, err) => console.log(val)
+                );
+            } else {
+                this.set("webViewSrc", text);
+            }
             textField.dismissSoftInput();
         } else {
             dialogs.alert("Please, add `http://` or `https://` in front of the URL string")
