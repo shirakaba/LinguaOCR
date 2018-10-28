@@ -13,12 +13,9 @@
     <script src="http://localhost:6060/tesseract.js"></script>
     <script>
       window.Tesseract = Tesseract.create({
-        workerPath: "http://localhost:6060/worker.js",
-        langPath: "http://localhost:6060/data/",
-        corePath: "http://localhost:6060/index.js",
-      });
-
-      window.Tesseract = Tesseract.create({
+        // workerPath: 'https://cdn.rawgit.com/naptha/tesseract.js/0.2.0/dist/worker.js',
+        // corePath: 'https://cdn.rawgit.com/naptha/tesseract.js-core/0.1.0/index.js',
+        // langPath: 'https://cdn.rawgit.com/naptha/tessdata/gh-pages/3.02/'
         workerPath: "http://localhost:6060/worker.js",
         langPath: "http://localhost:6060/data/",
         corePath: "http://localhost:6060/index.js",
@@ -38,8 +35,7 @@
         Tesseract.recognize(
           file,
           {
-            "lang": language,
-            "user_words_file": "eng.user-words"
+            "lang": language
           }
         )
         .then(data => {
