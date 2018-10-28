@@ -11,21 +11,19 @@
         position: relative;
         display: block;
         flex: 1;
-        border: 20px solid transparent;
       }
       #input {
         max-width: 100%;
         box-sizing: border-box;
-        padding: 20px;
-        margin-top: 30px;
-        border: 1px solid #ddd;
+        padding: 2px;
+        /* border: 1px dotted #ddd; */
       }
       #input-overlay {
         position: absolute;
         max-width: 100%;
         box-sizing: border-box;
-        margin-top: 30px;
-        padding: 20px;
+        padding: 2px;
+        /* border: 1px solid transparent; */
       }
     </style>
   </head>
@@ -54,12 +52,12 @@
       const input_overlay = document.getElementById('input-overlay');
 
       window.Tesseract = Tesseract.create({
-        workerPath: 'https://cdn.rawgit.com/naptha/tesseract.js/0.2.0/dist/worker.js',
-        corePath: 'https://cdn.rawgit.com/naptha/tesseract.js-core/0.1.0/index.js',
-        langPath: 'https://cdn.rawgit.com/naptha/tessdata/gh-pages/3.02/'
-        // workerPath: "http://localhost:6060/worker.js",
-        // langPath: "http://localhost:6060/data/",
-        // corePath: "http://localhost:6060/index.js",
+        // workerPath: 'https://cdn.rawgit.com/naptha/tesseract.js/0.2.0/dist/worker.js',
+        // corePath: 'https://cdn.rawgit.com/naptha/tesseract.js-core/0.1.0/index.js',
+        // langPath: 'https://cdn.rawgit.com/naptha/tessdata/gh-pages/3.02/'
+        workerPath: "http://localhost:6060/worker.js",
+        langPath: "http://localhost:6060/data/",
+        corePath: "http://localhost:6060/index.js",
       });
 
       function recognize(language) {
