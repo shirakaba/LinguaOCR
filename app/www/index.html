@@ -1,48 +1,100 @@
 <html>
-  <body>
+  <head>
+    <style>
+      .stretch {
+        position: absolute;
+        top: 0;
+        margin: 0;
+        width: 100%;
+      }
+      #demo-container {
+        position: relative;
+        display: block;
+        flex: 1;
+        border: 20px solid transparent;
+      }
+      #input {
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+        margin-top: 30px;
+        border: 1px solid #ddd;
+      }
+      #input-overlay {
+        position: absolute;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin-top: 30px;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body class="stretch">
     <div style="background-color: grey;">
       <h1>Result</h1>
       <div id="result"></div>
     </div>
     <div style="background-color: #8eb5c3; padding-bottom: 3px;">
       <h1>Image</h1>
-      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <img id="image" style="width: 98%; max-width: 400px; outline: 2px #8eb5c3 dotted;" src="http://localhost:6060/image.png">
+
+      <div style="display: block;">
+        <div id="demo-container">
+          <canvas id='input-overlay'></canvas>
+          <img
+            id="input"
+            src="http://localhost:6060/image.png"
+            onload="const io = document.getElementById('input-overlay'); io.width = event.target.naturalWidth; io.height = event.target.naturalHeight;"
+          >
+        </div>
       </div>
     </div>
     <script src="http://localhost:6060/tesseract.js"></script>
     <script>
-      window.Tesseract = Tesseract.create({
-        // workerPath: 'https://cdn.rawgit.com/naptha/tesseract.js/0.2.0/dist/worker.js',
-        // corePath: 'https://cdn.rawgit.com/naptha/tesseract.js-core/0.1.0/index.js',
-        // langPath: 'https://cdn.rawgit.com/naptha/tessdata/gh-pages/3.02/'
-        workerPath: "http://localhost:6060/worker.js",
-        langPath: "http://localhost:6060/data/",
-        corePath: "http://localhost:6060/index.js",
-      });
-      function recognize(language) {
-        let canvas = document.createElement("canvas");
-        let context = canvas.getContext("2d");
-        let image = document.getElementById("image");
-        
-        canvas.width = image.width;
-        canvas.height = image.height;
-        context.drawImage(image, 0, 0 );
-        let file = context.getImageData(0, 0, image.width, image.height);
+      const image = document.getElementById("input");
+      const input_overlay = document.getElementById('input-overlay');
 
+      window.Tesseract = Tesseract.create({
+        workerPath: 'https://cdn.rawgit.com/naptha/tesseract.js/0.2.0/dist/worker.js',
+        corePath: 'https://cdn.rawgit.com/naptha/tesseract.js-core/0.1.0/index.js',
+        langPath: 'https://cdn.rawgit.com/naptha/tessdata/gh-pages/3.02/'
+        // workerPath: "http://localhost:6060/worker.js",
+        // langPath: "http://localhost:6060/data/",
+        // corePath: "http://localhost:6060/index.js",
+      });
+
+      function recognize(language) {
         console.log("Recognising...");
+        document.getElementById('result').textContent = "Recognising...";
         // https://github.com/naptha/tesseract.js/blob/master/docs/tesseract_parameters.md
         Tesseract.recognize(
-          file,
+          image,
           {
             "lang": language
           }
         )
         .then(data => {
-          console.log("RECOGNISED!");
           console.log(data);
+          result(data);
           document.getElementById('result').innerHTML = data.html;
         });
+      }
+
+      function result(res){
+        // progressUpdate({ status: 'done', data: res });
+
+        res.words.forEach(function(w){
+          const b = w.bbox;
+          const ioctx = input_overlay.getContext('2d')
+
+          ioctx.strokeWidth = 2;
+          ioctx.strokeStyle = 'red';
+          ioctx.strokeRect(b.x0, b.y0, b.x1-b.x0, b.y1-b.y0);
+          ioctx.beginPath();
+          ioctx.moveTo(w.baseline.x0, w.baseline.y0);
+          ioctx.lineTo(w.baseline.x1, w.baseline.y1);
+          ioctx.strokeStyle = 'green';
+          ioctx.stroke();
+        })
       }
     </script>
   </body>
