@@ -3,11 +3,15 @@ import * as dialogs from "tns-core-modules/ui/dialogs";
 import {WebView, LoadEventData} from "tns-core-modules/ui/web-view";
 import { Page } from "tns-core-modules/ui/page";
 import { TextField } from "tns-core-modules/ui/text-field";
+import { HttpServer, HttpServerDelegate } from 'nativescript-http-server';
 
 export class wv extends Observable {
-    private _tftext: string = "https://docs.nativescript.org/";
+    private static OCR_SERVER_URL: string = "http://localhost:6060/index.html";
+    private webview?: WebView;
+    private httpServer: GCDWebServer = new HttpServer()._webServer;
+    private _tftext: string = wv.OCR_SERVER_URL;
     private _result: string = "";
-    private _webViewSrc: string = "https://docs.nativescript.org/";
+    private _webViewSrc: string = wv.OCR_SERVER_URL;
 
     get tftext(): string { return this._tftext; }
     get result(): string { return this._result; }
@@ -33,16 +37,6 @@ export class wv extends Observable {
 
     constructor() {
         super();
-        // const httpServer: GCDWebServer = new HttpServer()._webServer;
-
-        // httpServer.addGETHandlerForBasePathDirectoryPathIndexFilenameCacheAgeAllowRangeRequests(
-        //     // "/www/",
-        //     "/",
-        //     `${NSBundle.mainBundle.resourcePath}/app/www`, // NSHomeDirectory()
-        //     null,
-        //     3600,
-        //     true
-        // );
 
         // // Check Bonjour services via: dns-sd -B 
         // // http://hints.macworld.com/article.php?story=20051026183044858
@@ -62,11 +56,48 @@ export class wv extends Observable {
 
     navigatingTo(args) {
         console.log("navigatingTo();");
-
-        this.set("webViewSrc", "https://docs.nativescript.org/");
-        this.set("result", "");
-        this.set("tftext", "https://docs.nativescript.org/");
         const page: Page = <Page> args.object;
+
+        this.httpServer.addGETHandlerForBasePathDirectoryPathIndexFilenameCacheAgeAllowRangeRequests(
+            // "/www/",
+            "/",
+            `${NSBundle.mainBundle.resourcePath}/app/www`, // NSHomeDirectory()
+            null,
+            3600,
+            true
+        );
+
+        // const check = setInterval(
+        //     () => {
+        //         if(!this.httpServer.running || !this.webview) return;
+        //         console.log(`httpServer running!`);
+
+        //         setTimeout(
+        //             () => {
+        //                 this.set("webViewSrc", "http://localhost:6060/index.html");
+        //             },
+        //             2000
+        //         );
+        //         clearInterval(check);
+        //     },
+        //     20
+        // );
+
+        // const delegate = new HttpServerDelegate();
+
+        // HttpServerDelegate.prototype.webServerDidCompleteBonjourRegistration = (server: GCDWebServer) => {
+        // delegate.webServerDidCompleteBonjourRegistration = (server: GCDWebServer) => {
+        //     console.log("Custom webServerDidCompleteBonjourRegistration()");
+        //     this.set("webViewSrc", "http://localhost:6060/index.html");
+        // }
+        // this.httpServer.delegate = delegate;
+        
+
+        this.httpServer.startWithPortBonjourName(6060, "GCD Web Server");
+
+        // this.set("webViewSrc", "http://localhost:6060/index.html");
+        // this.set("result", "");
+        // this.set("tftext", "http://localhost:6060/index.html");
         page.bindingContext = this;
     }
 
@@ -74,11 +105,11 @@ export class wv extends Observable {
     onWebViewLoaded(webargs) {
         console.log("onWebViewLoaded();");
         const page: Page = <Page> webargs.object.page;
-        const webview: WebView = <WebView> webargs.object;
+        this.webview = <WebView> webargs.object;
         this.set("result", "WebView is still loading...");
         this.set("enabled", false);
 
-        webview.on(WebView.loadFinishedEvent, (args: LoadEventData) => {
+        this.webview.on(WebView.loadFinishedEvent, (args: LoadEventData) => {
             let message = "";
             if (!args.error) {
                 message = `WebView finished loading of ${args.url}`;
