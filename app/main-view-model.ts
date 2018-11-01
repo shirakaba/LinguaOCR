@@ -30,9 +30,9 @@ export class HelloWorldModel extends Observable {
 
         // Check Bonjour services via: dns-sd -B 
         // http://hints.macworld.com/article.php?story=20051026183044858
-        httpServer.startWithPortBonjourName(6060, "GCD Web Server");
+        httpServer.startWithPortBonjourName(7355, "GCD Web Server");
         /* TODO:
-         * - Init a WebView pointing at http://localhost:6060/index.html
+         * - Init a WebView pointing at http://localhost:7355/index.html
          * - Leave image.jpeg unwritten at start
          * - Implement an image picker.
          * - Implement a language pack downloader.

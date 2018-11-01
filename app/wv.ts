@@ -6,8 +6,8 @@ import { TextField } from "tns-core-modules/ui/text-field";
 import { HttpServer, HttpServerDelegate } from 'nativescript-http-server';
 
 export class wv extends Observable {
-    private static OCR_SERVER_DOMAIN: string = "http://localhost:6060";
-    private static OCR_SERVER_URL: string = "http://localhost:6060/index.html";
+    private static OCR_SERVER_DOMAIN: string = "http://localhost:7355";
+    private static OCR_SERVER_URL: string = "http://localhost:7355/index.html";
     private webview?: WebView;
     private httpServer: GCDWebServer = new HttpServer()._webServer;
     private _tftext: string = wv.OCR_SERVER_URL;
@@ -41,9 +41,9 @@ export class wv extends Observable {
 
         // // Check Bonjour services via: dns-sd -B 
         // // http://hints.macworld.com/article.php?story=20051026183044858
-        // httpServer.startWithPortBonjourName(6060, "GCD Web Server");
+        // httpServer.startWithPortBonjourName(7355, "GCD Web Server");
         // /* TODO:
-        //  * - Init a WebView pointing at http://localhost:6060/index.html
+        //  * - Init a WebView pointing at http://localhost:7355/index.html
         //  * - Leave image.jpeg unwritten at start
         //  * - Implement an image picker.
         //  * - Implement a language pack downloader.
@@ -75,7 +75,7 @@ export class wv extends Observable {
 
         //         setTimeout(
         //             () => {
-        //                 this.set("webViewSrc", "http://localhost:6060/index.html");
+        //                 this.set("webViewSrc", "http://localhost:7355/index.html");
         //             },
         //             2000
         //         );
@@ -89,16 +89,16 @@ export class wv extends Observable {
         // HttpServerDelegate.prototype.webServerDidCompleteBonjourRegistration = (server: GCDWebServer) => {
         // delegate.webServerDidCompleteBonjourRegistration = (server: GCDWebServer) => {
         //     console.log("Custom webServerDidCompleteBonjourRegistration()");
-        //     this.set("webViewSrc", "http://localhost:6060/index.html");
+        //     this.set("webViewSrc", "http://localhost:7355/index.html");
         // }
         // this.httpServer.delegate = delegate;
         
 
-        this.httpServer.startWithPortBonjourName(6060, "GCD Web Server");
+        this.httpServer.startWithPortBonjourName(7355, "GCD Web Server");
 
-        // this.set("webViewSrc", "http://localhost:6060/index.html");
+        // this.set("webViewSrc", "http://localhost:7355/index.html");
         // this.set("result", "");
-        // this.set("tftext", "http://localhost:6060/index.html");
+        // this.set("tftext", "http://localhost:7355/index.html");
         page.bindingContext = this;
     }
 
